@@ -3,6 +3,7 @@ type Sucursal {
   id: Int
   nombre: String
   direccion: String
+  idCiudad: String
   ciudad: Ciudad
 }
 
@@ -15,14 +16,12 @@ type Rubro {
   idSucursal: Int
   id: Int
   nombre: String
-  estado: String
 }
 
 input InputRubro {
   idSucursal: Int
   id: Int
   nombre: String
-  estado: String
 }
 
 type Articulo {
@@ -48,6 +47,21 @@ input InputSucursal {
   direccion: String
   idCiudad: Int
 }
+
+type TipoAbono {
+  idSucursal: Int
+  id: Int
+  nombre: String
+  precio: Float
+}
+
+input InputTipoAbono {
+  idSucursal: Int
+  id: Int
+  nombre: String
+  precio: Float
+}
+
 `];
 
 export default configSchema;

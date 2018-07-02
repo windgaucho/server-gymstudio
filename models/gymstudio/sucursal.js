@@ -1,19 +1,20 @@
 import _ from 'lodash';
 import knex from './conexion';
 
-class Rubro {
+class Sucursal {
   mapear(obj) {
     const objMapeado = {
       id: obj.id,
       nombre: obj.nombre,
       direccion: obj.direccion,
+      idCiudad: obj.id_ciudad,
     };
     return objMapeado;
   }
 
   getSucursales() {
     const query = knex.select()
-      .where('estado', '<>', 'E')
+      .whereNull('fecha_baja')
       .from('sucursales')
       .orderBy('nombre', 'asc');
 
@@ -30,7 +31,7 @@ class Rubro {
     const query = knex.select()
       .from('sucursales')
       .where({ id })
-      .andWhere('estado', '<>', 'E');
+      .whereNull('fecha_baja');
 
     return query.then((fila) => {
       if (_.isEmpty(fila)) return {};
@@ -76,4 +77,4 @@ class Rubro {
   }
 }
 
-export default Rubro;
+export default Sucursal;

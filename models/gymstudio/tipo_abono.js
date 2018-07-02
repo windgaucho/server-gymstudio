@@ -1,20 +1,23 @@
 import _ from 'lodash';
 import knex from './conexion';
 
-class Ciudad {
+class TipoAbono {
   mapear(obj) {
     const objMapeado = {
+      idSucursal: obj.id_sucursal,
       id: obj.id,
       nombre: obj.nombre,
+      precio: obj.precio,
     };
 
     return objMapeado;
   }
 
-  getCiudades() {
+  getTiposAbonos(idSucursal) {
     const query = knex.select()
       .whereNull('fecha_baja')
-      .from('ciudades')
+      .andWhere('id_sucursal', '=', idSucursal)
+      .from('tipos_abonos')
       .orderBy('nombre', 'asc');
 
     return query.then((filas) => {
@@ -26,11 +29,11 @@ class Ciudad {
     });
   }
 
-  getCiudad(id) {
+  getTipoAbono(id) {
     const query = knex.select()
-      .from('ciudades')
-      .where({ id })
-      .whereNull('fecha_baja');
+      .from('tipos_abonos')
+      .whereNull('fecha_baja')
+      .andWhere({ id });
 
     return query.then((fila) => {
       if (_.isEmpty(fila)) return {};
@@ -38,38 +41,41 @@ class Ciudad {
     });
   }
 
-  async create(ciudad) {
+  async create(tipoAbono) {
     const fecha = new Date();
-    const id = await knex('ciudades').insert({
-      nombre: ciudad.nombre,
+    const id = await knex('tipos_abonos').insert({
+      nombre: tipoAbono.nombre,
+      id_sucursal: tipoAbono.idSucursal,
+      precio: tipoAbono.precio,
       fecha_alta: fecha,
       fecha_actualizacion: fecha,
     });
-    return this.getCiudad(id[0]);
+    return this.getTipoAbono(id[0]);
   }
 
-  async update(ciudad) {
+  async update(tipoAbono) {
     const fecha = new Date();
-    await knex('ciudades')
-      .where('id', ciudad.id)
+    await knex('tipos_abonos')
+      .where('id', tipoAbono.id)
       .update({
-        nombre: ciudad.nombre,
+        nombre: tipoAbono.nombre,
+        id_sucursal: tipoAbono.idSucursal,
+        precio: tipoAbono.precio,
         fecha_actualizacion: fecha,
       });
-    return this.getCiudad(ciudad.id);
+    return this.getTipoAbono(tipoAbono.id);
   }
 
   async remove(id) {
     const fecha = new Date();
-    await knex('ciudades')
+    await knex('tipos_abonos')
       .where('id', id)
       .update({
-        estado: 'E',
         fecha_actualizacion: fecha,
         fecha_baja: fecha,
       });
-    return this.getciudad(id);
+    return this.getTipoAbono(id);
   }
 }
 
-export default Ciudad;
+export default TipoAbono;

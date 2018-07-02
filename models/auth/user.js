@@ -9,6 +9,7 @@ const UserSchema = new Schema({
   password: String,
   apellido: String,
   nombre: String,
+  idSucursal: Number,
   roles: [String],
 });
 

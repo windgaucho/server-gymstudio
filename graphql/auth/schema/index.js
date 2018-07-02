@@ -4,6 +4,7 @@ const authSchema = [`
     userId: String
     apellido: String
     nombre: String
+    idSucursal: Int
   }
 `];
 

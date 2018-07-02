@@ -13,6 +13,10 @@ import schema from './schema';
 
 import Sucursal from './models/gymstudio/sucursal';
 import Ciudad from './models/gymstudio/ciudad';
+import Rubro from './models/gymstudio/rubro';
+import Articulo from './models/gymstudio/articulo';
+import TipoAbono from './models/gymstudio/tipo_abono';
+import Cliente from './models/gymstudio/cliente';
 
 const corsOptions = {
   origin: 'http://localhost:8080',
@@ -57,6 +61,10 @@ app.use(GRAPHQL_ROUTE, bodyParser.json(), graphqlExpress((req) => {
       req,
       Sucursal: new Sucursal(),
       Ciudad: new Ciudad(),
+      Rubro: new Rubro(),
+      Articulo: new Articulo(),
+      TipoAbono: new TipoAbono(),
+      Cliente: new Cliente(),
     },
     debug: true,
   };

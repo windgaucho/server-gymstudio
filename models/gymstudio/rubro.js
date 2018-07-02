@@ -1,9 +1,10 @@
 import _ from 'lodash';
 import knex from './conexion';
 
-class Ciudad {
+class Rubro {
   mapear(obj) {
     const objMapeado = {
+      idSucursal: obj.id_sucursal,
       id: obj.id,
       nombre: obj.nombre,
     };
@@ -11,10 +12,11 @@ class Ciudad {
     return objMapeado;
   }
 
-  getCiudades() {
+  getRubros(idSucursal) {
     const query = knex.select()
       .whereNull('fecha_baja')
-      .from('ciudades')
+      .andWhere('id_sucursal', '=', idSucursal)
+      .from('rubros')
       .orderBy('nombre', 'asc');
 
     return query.then((filas) => {
@@ -26,11 +28,11 @@ class Ciudad {
     });
   }
 
-  getCiudad(id) {
+  getRubro(id) {
     const query = knex.select()
-      .from('ciudades')
-      .where({ id })
-      .whereNull('fecha_baja');
+      .from('rubros')
+      .whereNull('fecha_baja')
+      .andWhere({ id });
 
     return query.then((fila) => {
       if (_.isEmpty(fila)) return {};
@@ -38,38 +40,39 @@ class Ciudad {
     });
   }
 
-  async create(ciudad) {
+  async create(rubro) {
     const fecha = new Date();
-    const id = await knex('ciudades').insert({
-      nombre: ciudad.nombre,
+    const id = await knex('rubros').insert({
+      nombre: rubro.nombre,
+      id_sucursal: rubro.idSucursal,
       fecha_alta: fecha,
       fecha_actualizacion: fecha,
     });
-    return this.getCiudad(id[0]);
+    return this.getRubro(id[0]);
   }
 
-  async update(ciudad) {
+  async update(rubro) {
     const fecha = new Date();
-    await knex('ciudades')
-      .where('id', ciudad.id)
+    await knex('rubros')
+      .where('id', rubro.id)
       .update({
-        nombre: ciudad.nombre,
+        nombre: rubro.nombre,
+        id_sucursal: rubro.idSucursal,
         fecha_actualizacion: fecha,
       });
-    return this.getCiudad(ciudad.id);
+    return this.getRubro(rubro.id);
   }
 
   async remove(id) {
     const fecha = new Date();
-    await knex('ciudades')
+    await knex('rubros')
       .where('id', id)
       .update({
-        estado: 'E',
         fecha_actualizacion: fecha,
         fecha_baja: fecha,
       });
-    return this.getciudad(id);
+    return this.getRubro(id);
   }
 }
 
-export default Ciudad;
+export default Rubro;
