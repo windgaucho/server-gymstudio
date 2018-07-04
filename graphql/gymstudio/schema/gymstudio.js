@@ -8,8 +8,8 @@ type Cliente {
   domicilio: String
   telefono: String
   contacto: String
-  mail: String
-  Sexo: String
+  email: String
+  sexo: String
   fechaNacimiento: Date
   fechaIngreso: Date
   fechaVencimiento: Date
@@ -27,10 +27,11 @@ input InputCliente {
   domicilio: String
   telefono: String
   contacto: String
-  mail: String
-  Sexo: String
+  email: String
+  sexo: String
   fechaNacimiento: Date
   fechaIngreso: Date
+  fechaVencimiento: Date
   observaciones: String
   idTipoAbono: Int
 }
