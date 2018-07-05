@@ -87,7 +87,6 @@ class Cliente {
     await knex('clientes')
       .where('id', cliente.id)
       .update({
-        id_sucursal: cliente.idSucursal,
         apellido: cliente.apellido.toUpperCase(),
         nombre: cliente.nombre.toUpperCase(),
         doc_id: cliente.docId,
